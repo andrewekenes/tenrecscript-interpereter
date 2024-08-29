@@ -1,0 +1,28 @@
+<input class="gui" type="file" id="file">
+<p><button class = "gui" onclick="whenclick()">run</button></p>
+<p id="foo">upload your .tenrec file</p>
+<style>
+    .gui{background :red;}
+</style>
+<script>
+function whenclick()
+{
+    const fileInput = document.getElementById("file");
+    const file = fileInput.files[0];
+    
+    if (file)
+    {
+        const reader = new FileReader();
+        reader.onload = function(e)
+        {
+            let text = e.target.result.
+                replace("log ", "<p>").
+                replace("@TENRECSCRIPT version = 3.0:", "").
+                replace("button ", "<button>").
+                replace(":", "<br/></button>");
+            document.getElementById("foo").innerHTML = text;
+        };
+        reader.readAsText(file);
+    }
+}
+</script>
