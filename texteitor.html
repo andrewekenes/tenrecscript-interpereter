@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>TenrecScribe</title>
+<style>
+textarea {
+  position: absolute;
+  top: 150px;
+  left: 175px;
+  width: 1000px;
+  height: 500px;
+  padding: 10px;
+  font-family: monospace;
+  font-size: 16px;
+}
+
+.dark-mode {
+  background-color: #787672;
+  color: white;
+}
+
+body.dark-mode {
+  background-color: #787672;
+  color: white;
+}
+
+input[type="text"] {
+  position: absolute;
+  top: 120px;
+  left: 175px;
+  font-size: 16px;
+  padding: 5px;
+}
+
+h1, p {
+  font-family: monospace;
+}
+
+textarea, input {
+  border-color: black;
+}
+
+.btn {
+  position: absolute;
+  width: 75px;
+  height: 75px;
+  left: 1120px;
+  top: 50px;
+}
+#output
+{
+  position: absolute;
+  width: 500px;
+  height: 100px;
+  left: 500px;
+  top: 25px;
+  background:white;
+}
+</style>
+<script>
+let darkMode = false;
+let fileHandle;
+
+function toggleDarkMode() {
+  darkMode = !darkMode;
+  document.body.classList.toggle("dark-mode", darkMode);
+  document.getElementById("code").classList.toggle("dark-mode", darkMode);
+}
+
+async function saveTextAsFile() {
+  const textToSave = document.getElementById("code").value;
+  if (!fileHandle) {
+    const options = {
+      types: [{
+        description: 'Text Files',
+        accept: {
+          'text/plain': ['.txt'],
+        },
+      }],
+    };
+    fileHandle = await window.showSaveFilePicker(options);
+  }
+  const writable = await fileHandle.createWritable();
+  await writable.write(textToSave);
+  await writable.close();
+}
+
+async function openFile() {
+  [fileHandle] = await window.showOpenFilePicker();
+  const file = await fileHandle.getFile();
+  const contents = await file.text();
+  document.getElementById("code").value = contents;
+}
+
+function run() {
+  let code = document.getElementById("code").value.
+                replace("log ", "<p>").
+                replace("@TENRECSCRIPT version = 3.0:", "").
+                replace("button ", "<button>").
+                replace(":", "</p></button>");
+  document.getElementById("output").hidden = false;
+  document.getElementById("output").innerHTML = code;
+}
+</script>
+</head>
+<body>
+<h1>TenrecScribe</h1>
+<p>Text editor and IDE for TenrecScript</p>
+
+<button onclick="toggleDarkMode()">Toggle Dark Mode</button>
+<input type="text" id="extension" placeholder="File name">
+<p>
+  <button onclick="openFile()">Open File</button>
+  <button onclick="saveTextAsFile()">Save</button>
+</p>
+<button onclick="run()" id="btn" class="btn">Run Tenrec<br>Script</button>
+<button id="output" hidden="true"></button>
+<textarea id="code"></textarea>
+</body>
+</html>
