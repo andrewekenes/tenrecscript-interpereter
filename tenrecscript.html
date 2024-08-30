@@ -19,7 +19,7 @@ function whenclick()
                 replace("log ", "<p>").
                 replace("@TENRECSCRIPT version = 3.0:", "").
                 replace("button ", "<button>").
-                replace(":", "<br/></button>");
+                replace(":", "</p><br/></button>");
             document.getElementById("foo").innerHTML = text;
         };
         reader.readAsText(file);
