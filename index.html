@@ -1,0 +1,92 @@
+<!doctype html>
+<html>
+    <head>
+        <title>TenrecScript</title>
+        <link rel="icon" href="logo.png" type="image/x-icon" />
+        <style>
+        body {
+            font-family:sans-serif;
+        }
+        .menu {
+            background-color:lightgreen;
+            color:black;
+            border-radius:30px;
+            cursor:pointer;
+        }
+        body {
+            background-color:green;
+        }
+        #adds {
+            background-image:url("board.png");
+            position:absolute;
+            width:750px;
+            height:250px;
+            left:250px;
+            cursor:pointer;
+        }
+        #arrow1 {
+            font-size:200px;
+            position:absolute;
+            left:75px;
+            cursor:pointer;
+        }
+        #arrow2 {
+            font-size:200px;
+            position:absolute;
+            left:1075px;
+            cursor:pointer;
+        }
+        .content {
+            background-color:lightgreen;
+            position:absolute;
+            width:750px;
+            height:250px;
+            top:450px;
+            left:25px;
+        }
+        </style>
+        <script>
+            let count = 0
+            function change() {
+                if (count === 0) {
+                    document.getElementById("adds").style.background = 'url("dash.png")';
+                    count = 1;
+                } else if (count === 1) {
+                    document.getElementById("adds").style.background = 'url("board.png")';
+                    count = 0;
+                }
+            }
+        </script>
+    </head>
+    <header>
+        <a class="menu" href="index.html">home</a>
+        <a class="menu" href="https://github.com/andrewekenes/tenrecscript-interpereter">downloads</a>
+        <a class="menu" href="texteditor.html">playground</a>
+        <a class="menu" href="tenrecscript.html">tenrecscript</a>
+    </header>
+    <body>
+        <h1>TenrecScript</h1>
+       <h2>Programming language</h2>
+        <div id="adds"></div>
+        <div id="arrow1" onclick="change()"><</div>
+        <div id="arrow2" onclick="change()">></div>
+        <div class="content">
+            <p>
+            TenrecScript is a programming language designed to make it easy and fun to learn about computers.
+            The idea first came in 2022 and evolved over time.
+            <br/>
+            <p>The language has the following commands<p>
+            </p>
+            <ul style="
+                font-family:serif;
+                ">
+                <li>log</li>
+                <li>endl</li>
+                <li>clear</li>
+                <li>loop</li>
+                <li>math</li>
+                <li>image</li>
+            </ul>
+        </div>
+    </body>
+</html>
