@@ -1,28 +1,91 @@
-<input class="gui" type="file" id="file">
-<p><button class = "gui" onclick="whenclick()">run</button></p>
-<p id="foo">upload your .tenrec file</p>
+<html>
+<head>
 <style>
-    .gui{background :red;}
+.result {
+    position:absolute;
+    width:1000px;
+    height:500px;
+    background:black;
+    color:white;
+    border-radius:5px;
+}
+.graph {
+    position:absolute;
+    width:500px;
+    height:500px;
+    background:white;
+    color:black;
+    border-radius:30px;
+    top:200px;
+    left:750px;
+}
+body {
+    font-family:monospace;
+}
 </style>
 <script>
-function whenclick()
-{
+function whenclick() {
     const fileInput = document.getElementById("file");
     const file = fileInput.files[0];
-    
-    if (file)
-    {
+
+    if (file) {
         const reader = new FileReader();
-        reader.onload = function(e)
-        {
-            let text = e.target.result.
-                replace("log ", "<p>").
-                replace("@TENRECSCRIPT version = 3.0:", "").
-                replace("button ", "<button>").
-                replace(":", "</p><br/></button>");
-            document.getElementById("foo").innerHTML = text;
+        reader.onload = function(e) {
+            let code = e.target.result;
+            let lines = code.split('\n');
+            let processedCode = '';
+            let graphics = '';
+            let x = 0;
+            let y = 0;
+
+            lines.forEach(line => {
+                if (line.startsWith('log ')) {
+                    if (line.includes("math(") && line.includes(")")) {
+                        processedCode += eval(line.replace("log math", ""));
+                    } else {
+                        processedCode += line.replace("log ", "");
+                    }
+                } else if (line.startsWith('endl')) {
+                    processedCode += '<br/>';
+            
+                    graphics += '<br/>';
+                } else if (line.startsWith('button')) {
+                    graphics += line.replace("button ", "<button>") + "</button>";
+                } else if (line.startsWith('clear')) {
+                    processedCode = '';
+                } else if (line.startsWith('loop ')) {
+                    processedCode = processedCode.replace("loop", "");
+                    processedCode = processedCode.repeat(Number(line.replace("loop ", "")));
+
+                    graphics = graphics.replace("loop", "");
+                    graphics = graphics.repeat(Number(line.replace("loop ", "")));
+                } else if (line.startsWith('pin')) {
+                    alert(`Connect pins + and ${line.replace('pin ', '')} with crocodile clips.`);
+                } else if (line.startsWith('popup')) {
+                    alert(line.replace('popup ', ''));
+                } else if (line.startsWith('image')) {
+                    graphics += `<img src="${line.replace("image ", "")}"/>`;
+                }
+            });
+            if (graphics.replace("<br/>", '') !== '' ) {
+                document.getElementById('graph').hidden = false;
+            }
+            document.getElementById('foo').innerHTML = processedCode;
+            document.getElementById('graph').innerHTML = graphics;
         };
         reader.readAsText(file);
     }
 }
 </script>
+</head>
+<body bgcolor="ninjaturtles">
+<header>
+<input class="gui" type="file" id="file"> 
+<p><button class="gui" onclick="whenclick()">run</button></p>
+</header>
+<div class="result">
+<p id="foo">Upload your .tenrec file</p>
+</div>
+<div class="graph" id="graph" hidden></div>
+</body>
+</html>
