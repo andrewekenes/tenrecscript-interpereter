@@ -1,12 +1,20 @@
 # TenrecScript
-tenrecscript is skibidi dop dop dop
+tenrecscript is my programming language
 ```
-@TENRECSCRIPT version = 3.0:
-
-log Hello world<br/>:
-button click me:
+log @
+loop 5
+endl
+loop 5
 ```
 resutls in
 
-Hello world
-<button>click me<button>
+```
+@@@@@
+@@@@@
+@@@@@
+@@@@@
+```
+write your code in the plaground (tenrecscribe) where you can edit files as well as directly run code
+you can also upload your code in *tenrecscript.html* which will let you write code in your favorite IDE
+
+note: all tenrecscript files end in the *.tenrec* extension
