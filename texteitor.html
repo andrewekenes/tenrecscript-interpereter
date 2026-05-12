@@ -91,15 +91,45 @@ async function openFile() {
   const contents = await file.text();
   document.getElementById("code").value = contents;
 }
-
 function run() {
-  let code = document.getElementById("code").value.
-                replace("log ", "<p>").
-                replace("@TENRECSCRIPT version = 3.0:", "").
-                replace("button ", "<button>").
-                replace(":", "</p></button>");
+  let code = document.getElementById("code").value;
+  let lines = code.split('\n');
+  let processedCode = '';
+
+  lines.forEach(line => {
+
+    if (line.startsWith('log ')) {
+      if (line.includes("math(") && line.includes(")")) {
+                        processedCode += eval(line.replace("log math", ""));
+                    } else {
+                        processedCode += line.replace("log ", "");
+                    }
+    }
+
+    else if (line === 'endl') {
+      processedCode += '<br/>';
+    }
+    else if (line.startsWith('button')) {
+        processedCode += line.replace('button ', '<button>') + '</button>';
+    }
+    else if (line.startsWith('clear')) {
+        processedCode = "";
+    }
+    else if (line.startsWith('loop')) {
+        processedCode = processedCode.replace("loop", "");
+        processedCode = processedCode.repeat(Number(line.replace("loop ", "")));
+    }
+    else if (line.startsWith("pin")) {
+        alert(`connect pins + and ${line.replace("pin ", "")} with crocodile clips`);
+    }
+    else if (line.startsWith("popup")) {
+        alert(line.replace("popup ",""));
+    }
+  });
+
   document.getElementById("output").hidden = false;
-  document.getElementById("output").innerHTML = code;
+  document.getElementById("output").innerHTML = processedCode;
+
 }
 </script>
 </head>
